@@ -13,6 +13,11 @@ export class LayoutHeaderComponent implements OnInit {
 	 */
 	@Input('title') public title: string;
 
+	/**
+	 * Application logo url
+	 */
+	@Input('logoUrl') public logoUrl: string;
+
 	constructor() { }
 
 	ngOnInit(): void {

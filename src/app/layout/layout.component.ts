@@ -18,6 +18,7 @@ import { LayoutFooterComponent } from "./components/footer/footer.component";
 export class LayoutComponent implements OnInit {
 
 	public readonly appTitle = appConfig.appTitle;
+	public readonly appLogoUrl = appConfig.appLogoUrl;
 	public readonly companyName = appConfig.companyName;
 
 	constructor() { }
