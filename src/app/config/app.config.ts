@@ -3,6 +3,7 @@
  */
 export type AppConfig = {
 	appTitle: string;
+	appLogoUrl: string;
 	companyName: string;
 };
 
@@ -12,5 +13,6 @@ export type AppConfig = {
  */
 export const appConfig: AppConfig = {
 	appTitle: 'BRL Exchange Rate',
+	appLogoUrl: 'assets/images/logo/logotipo-actionlabs-4.png',
 	companyName: 'Action Labs',
 };
