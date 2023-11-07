@@ -86,3 +86,15 @@
 		}
 	}
 }
+
+/* ------------------------------ */
+/* Progress bar */
+/* ------------------------------ */
+
+.mat-mdc-progress-bar {
+
+	&.mat-primary {
+
+		@apply text-primary border-primary bg-primary fill-primary #{'!important'};
+	}
+}
