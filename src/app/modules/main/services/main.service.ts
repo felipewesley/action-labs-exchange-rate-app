@@ -18,7 +18,7 @@ export class MainService {
 		.pipe(
 			tap(() => {
 				// Resets the daily exchange rate when the current exchanged is updated
-				this._dailyExchangeRate.next(null);
+				// this._dailyExchangeRate.next(null);
 			})
 		);
 	public readonly dailyExchangeRate$ = this._dailyExchangeRate.asObservable();
@@ -48,6 +48,16 @@ export class MainService {
 				map(currentExchangeRate => {
 					console.log('[CURRENT] =>', currentExchangeRate);
 					this._currentExchangeRate.next(currentExchangeRate);
+
+					// Init daily exchanges rate with emtpy data
+					this._dailyExchangeRate.next({
+						from: currentExchangeRate.fromSymbol,
+						to: currentExchangeRate.toSymbol,
+						data: [],
+						lastUpdatedAt: currentExchangeRate.lastUpdatedAt,
+						rateLimitExceeded: currentExchangeRate.rateLimitExceeded,
+						success: currentExchangeRate.success
+					});
 				})
 			);
 	}
@@ -87,7 +97,7 @@ export class MainService {
 			toSymbol: toSymbol
 		})
 		.pipe(
-			delay(3000)
+			// delay(3000)
 		);
 
 		return this._http.get<CurrentExchangeRateModel>(url, { params })
@@ -192,7 +202,7 @@ export class MainService {
 			to: toSymbol
 		})
 		.pipe(
-			delay(3000)
+			// delay(3000)
 		);
 
 		return this._http.get<DailyExchangeRateModel>(url, { params })
