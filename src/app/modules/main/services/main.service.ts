@@ -14,8 +14,8 @@ export class MainService {
 	private readonly _currentExchangeRate = new BehaviorSubject<CurrentExchangeRateModel>(null);
 	private readonly _dailyExchangeRate = new BehaviorSubject<DailyExchangeRateModel>(null);
 
-	public readonly currentExchangeRate = this._currentExchangeRate.asObservable();
-	public readonly dailyExchangeRate = this._dailyExchangeRate.asObservable();
+	public readonly currentExchangeRate$ = this._currentExchangeRate.asObservable();
+	public readonly dailyExchangeRate$ = this._dailyExchangeRate.asObservable();
 
 	constructor(
 		private _http: HttpClient
