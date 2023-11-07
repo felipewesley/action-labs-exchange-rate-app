@@ -1,4 +1,4 @@
-<main class="flex-auto">
+<main class="flex-auto flex flex-col">
 
 	<form class="flex flex-col gap-4" (ngSubmit)="fetchResult()">
 
@@ -22,5 +22,13 @@
 		</button>
 
 	</form>
+
+	<section class="flex flex-col">
+
+		<hr class="flex-auto my-8">
+
+		<app-main-current-exchange-rate></app-main-current-exchange-rate>
+
+	</section>
 
 </main>

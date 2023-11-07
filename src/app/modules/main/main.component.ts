@@ -12,6 +12,8 @@ import { VALID_CURRENCY_CODES } from "app/domain/constants/valid-currency-codes.
 
 import { MainService } from "./services/main.service";
 
+import { MainCurrentExchangeRateComponent } from "./components/current-exchange-rate/current-exchange-rate.component";
+
 const currencyCodeQueryParamsKey = 'currencyCode';
 
 @Component({
@@ -24,7 +26,9 @@ const currencyCodeQueryParamsKey = 'currencyCode';
 		ReactiveFormsModule,
 		MatInputModule,
 		MatFormFieldModule,
-		MatButtonModule
+		MatButtonModule,
+
+		MainCurrentExchangeRateComponent
 	],
 	providers: [
 		MainService
