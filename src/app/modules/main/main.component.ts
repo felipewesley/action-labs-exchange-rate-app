@@ -100,6 +100,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
 					const currencyCode = params.get(currencyCodeQueryParamsKey);
 
+					// Resets the daily exchange rate
+					this._service.clearDailyExchangeRate();
+
 					// No currency code in the query
 					if (currencyCode == null) {
 						this._service.clearCurrentExchangeRate();

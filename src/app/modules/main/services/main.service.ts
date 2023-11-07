@@ -34,6 +34,14 @@ export class MainService {
 	}
 
 	/**
+	 * Removes the daily exchange data from the subject
+	 */
+	public clearDailyExchangeRate(): void;
+	public clearDailyExchangeRate(): void {
+		this._dailyExchangeRate.next(null);
+	}
+
+	/**
 	 * Fetches the current exchange rate from the api and updates its subject
 	 * @param fromSymbol
 	 * @param toSymbol
