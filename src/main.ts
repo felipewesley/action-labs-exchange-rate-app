@@ -7,6 +7,7 @@ import { AppComponent } from "app/app.component";
 
 import { appRoutes } from "app/routes/routes";
 import { apiKeyInterceptorFn } from "app/core/auth/interceptors/api-key.interceptor";
+import { errorInterceptorFn } from "app/core/errors/error.interceptor";
 
 bootstrapApplication(AppComponent, {
 	providers: [
@@ -19,7 +20,8 @@ bootstrapApplication(AppComponent, {
 		 * HTTP Client
 		 */
 		provideHttpClient(withInterceptors([
-			apiKeyInterceptorFn
+			apiKeyInterceptorFn,
+			errorInterceptorFn
 		])),
 
 		/**
