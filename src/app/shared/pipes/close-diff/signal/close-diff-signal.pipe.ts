@@ -11,8 +11,6 @@ export class CloseDiffSignalPipe implements PipeTransform {
 
 	transform(value: number): string {
 
-		console.log('signal =>', value);
-
 		if (value == 0) {
 			return value.toString();
 		}
