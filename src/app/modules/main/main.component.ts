@@ -6,13 +6,14 @@ import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 
-import { Subject, filter, map, switchMap, takeUntil } from "rxjs";
+import { Subject, filter, map, switchMap, takeUntil, tap } from "rxjs";
 
 import { VALID_CURRENCY_CODES } from "app/domain/constants/valid-currency-codes.constant";
 
 import { MainService } from "./services/main.service";
 
 import { MainCurrentExchangeRateComponent } from "./components/current-exchange-rate/current-exchange-rate.component";
+import { MainDailyExchangeRateComponent } from "./components/daily-exchange-rate/daily-exchange-rate.component";
 
 const currencyCodeQueryParamsKey = 'currencyCode';
 
@@ -28,7 +29,8 @@ const currencyCodeQueryParamsKey = 'currencyCode';
 		MatFormFieldModule,
 		MatButtonModule,
 
-		MainCurrentExchangeRateComponent
+		MainCurrentExchangeRateComponent,
+		MainDailyExchangeRateComponent
 	],
 	providers: [
 		MainService
@@ -49,6 +51,11 @@ export class MainComponent implements OnInit, OnDestroy {
 		private _activatedRoute: ActivatedRoute
 	) {
 
+		/**
+		 * Min length of the first valid currency code
+		 */
+		const minLengthRef = VALID_CURRENCY_CODES.at(0)?.key?.length;
+
 		const minAndMaxLength = VALID_CURRENCY_CODES
 			.map(c => c.key)
 			.reduce((minAndMax, code) => {
@@ -62,7 +69,7 @@ export class MainComponent implements OnInit, OnDestroy {
 				}
 
 				return minAndMax;
-			}, { min: 0, max: 0 });
+			}, { min: minLengthRef ?? 0, max: 0 });
 
 		this.currencyCodeControl = new FormControl<string>(null, [
 			Validators.minLength(minAndMaxLength.min),

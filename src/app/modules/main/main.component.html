@@ -1,4 +1,4 @@
-<main class="flex-auto flex flex-col">
+<main class="flex-auto flex flex-col pb-12">
 
 	<form class="flex flex-col gap-4" (ngSubmit)="fetchResult()">
 
@@ -27,11 +27,22 @@
 
 		<hr class="flex-auto my-8">
 
-		<app-main-current-exchange-rate
-			[fromSymbol]="currentExchangeRate.fromSymbol"
-			[toSymbol]="currentExchangeRate.toSymbol"
-			[exchangeRate]="currentExchangeRate.exchangeRate"
-			[lastUpdatedAt]="currentExchangeRate.lastUpdatedAt"></app-main-current-exchange-rate>
+		<div class="flex flex-col gap-4">
+
+			<app-main-current-exchange-rate
+				[fromSymbol]="currentExchangeRate.fromSymbol"
+				[toSymbol]="currentExchangeRate.toSymbol"
+				[exchangeRate]="currentExchangeRate.exchangeRate"
+				[lastUpdatedAt]="currentExchangeRate.lastUpdatedAt"></app-main-current-exchange-rate>
+
+			<app-main-daily-exchange-rate
+				*ngIf="dailyExchangeRate$ | async as dailyExchangeRate"
+				[numberOfDays]="30"
+				[fromSymbol]="currentExchangeRate.fromSymbol"
+				[dailyExchangeRates]="dailyExchangeRate.data"
+				(onLoadDailyExchangeRates)="fetchDailyResults()"></app-main-daily-exchange-rate>
+
+		</div>
 
 	</section>
 
