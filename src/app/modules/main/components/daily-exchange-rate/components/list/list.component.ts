@@ -1,8 +1,9 @@
-import { CurrencyPipe, DatePipe, NgClass, NgFor } from "@angular/common";
+import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgFor, NgSwitch, NgSwitchCase } from "@angular/common";
 import { Component, Input, OnInit } from "@angular/core";
+import { MatIconModule } from "@angular/material/icon";
 
 import { DailyExchangeRateDataModel } from "app/domain/models/daily-exchange-rate.model";
-import { CloseDiffSignalPipe } from "app/shared/pipes/close-diff-signal";
+import { CloseDiffFormatPipe, CloseDiffSignalPipe } from "app/shared/pipes/close-diff";
 import { DailyExchangeRatePipe } from "app/shared/pipes/daily-exchange-rate";
 
 export type MainDailyExchangeRateListModel = DailyExchangeRateDataModel & {
@@ -17,11 +18,16 @@ export type MainDailyExchangeRateListModel = DailyExchangeRateDataModel & {
 		NgFor,
 		DatePipe,
 		NgClass,
+		NgSwitch,
+		NgSwitchCase,
+		MatIconModule,
 		DailyExchangeRatePipe,
-		CloseDiffSignalPipe
+		CloseDiffSignalPipe,
+		CloseDiffFormatPipe
 	],
 	providers: [
-		CurrencyPipe
+		CurrencyPipe,
+		DecimalPipe
 	]
 })
 export class MainDailyExchangeRateListComponent implements OnInit {
