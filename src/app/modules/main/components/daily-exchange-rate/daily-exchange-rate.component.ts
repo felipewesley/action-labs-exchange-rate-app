@@ -1,5 +1,5 @@
 import { I18nPluralPipe, NgIf } from "@angular/common";
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 
@@ -11,6 +11,7 @@ import { MainDailyExchangeRateListComponent, MainDailyExchangeRateListModel } fr
 @Component({
 	selector: 'app-main-daily-exchange-rate',
 	templateUrl: './daily-exchange-rate.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: true,
 	imports: [
 		NgIf,
@@ -39,15 +40,31 @@ export class MainDailyExchangeRateComponent implements OnInit {
 		}
 
 		const rates: MainDailyExchangeRateListModel[] = data
-			.map(d => {
+			.map((d, i, arr) => {
 
 				const symbol = VALID_CURRENCY_CODES
 					.find(c => c.currencyCode == this.toSymbol)
 					?.symbol;
 
+				const closeOfYesterday = arr[i - 1]?.close ?? null;
+
+				if (closeOfYesterday === null) {
+
+					return <MainDailyExchangeRateListModel>{
+						...d,
+						closeDiff: 0,
+						currencySymbol: symbol
+					};
+				}
+
+				const { close } = d;
+
+				const diff = close - closeOfYesterday;
+				const closeDiff = (diff / closeOfYesterday) * 100;
+
 				return <MainDailyExchangeRateListModel>{
 					...d,
-					closeDiff: 2.5174412,
+					closeDiff: closeDiff,
 					currencySymbol: symbol
 				};
 			});
