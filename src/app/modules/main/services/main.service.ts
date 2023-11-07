@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 
 import { environment } from "environments/environment";
 
-import { BehaviorSubject, Observable, delay, map, of, take, tap } from "rxjs";
+import { BehaviorSubject, Observable, delay, finalize, map, of, take, tap } from "rxjs";
 
 import { DailyExchangeRateModel } from "app/domain/models/daily-exchange-rate.model";
 import { CurrentExchangeRateModel } from "app/domain/models/current-exchange-rate.model";
@@ -14,6 +14,8 @@ export class MainService {
 	private readonly _currentExchangeRate = new BehaviorSubject<CurrentExchangeRateModel>(null);
 	private readonly _dailyExchangeRate = new BehaviorSubject<DailyExchangeRateModel>(null);
 
+	private readonly _loading = new BehaviorSubject<boolean>(false);
+
 	public readonly currentExchangeRate$ = this._currentExchangeRate.asObservable()
 		.pipe(
 			tap(() => {
@@ -22,6 +24,8 @@ export class MainService {
 			})
 		);
 	public readonly dailyExchangeRate$ = this._dailyExchangeRate.asObservable();
+
+	public readonly loading$ = this._loading.asObservable();
 
 	constructor(
 		private _http: HttpClient
@@ -43,10 +47,12 @@ export class MainService {
 	public fetchCurrentExchangeRate(fromSymbol: string, toSymbol: string): Observable<void>;
 	public fetchCurrentExchangeRate(fromSymbol: string, toSymbol: string): Observable<void> {
 
+		this._loading.next(true);
+
 		return this._fetchCurrentExchangeRate(fromSymbol, toSymbol)
 			.pipe(
+				finalize(() => this._loading.next(false)),
 				map(currentExchangeRate => {
-					console.log('[CURRENT] =>', currentExchangeRate);
 					this._currentExchangeRate.next(currentExchangeRate);
 
 					// Init daily exchanges rate with emtpy data
@@ -70,10 +76,12 @@ export class MainService {
 	public fetchDailyExchangeRate(fromSymbol: string, toSymbol: string): Observable<void>;
 	public fetchDailyExchangeRate(fromSymbol: string, toSymbol: string): Observable<void> {
 
+		this._loading.next(true);
+
 		return this._fetchDailyExchangeRate(fromSymbol, toSymbol)
 			.pipe(
+				finalize(() => this._loading.next(false)),
 				map(dailyExchangeRate => {
-					console.log('[DAILY] =>', dailyExchangeRate);
 					this._dailyExchangeRate.next(dailyExchangeRate);
 				})
 			);
@@ -97,7 +105,7 @@ export class MainService {
 			toSymbol: toSymbol
 		})
 		.pipe(
-			// delay(3000)
+			delay(3000)
 		);
 
 		return this._http.get<CurrentExchangeRateModel>(url, { params })
@@ -116,7 +124,7 @@ export class MainService {
 		};
 
 		return of(<DailyExchangeRateModel>{
-			data: [
+			data: [] ?? [
 				{
 					close: 5.0038,
 					date: new Date(2022, 2, 9),
@@ -202,7 +210,7 @@ export class MainService {
 			to: toSymbol
 		})
 		.pipe(
-			// delay(3000)
+			delay(3000)
 		);
 
 		return this._http.get<DailyExchangeRateModel>(url, { params })
