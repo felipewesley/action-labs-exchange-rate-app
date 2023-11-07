@@ -54,10 +54,10 @@ export class MainComponent implements OnInit, OnDestroy {
 		/**
 		 * Min length of the first valid currency code
 		 */
-		const minLengthRef = VALID_CURRENCY_CODES.at(0)?.key?.length;
+		const minLengthRef = VALID_CURRENCY_CODES.at(0)?.currencyCode?.length;
 
 		const minAndMaxLength = VALID_CURRENCY_CODES
-			.map(c => c.key)
+			.map(c => c.currencyCode)
 			.reduce((minAndMax, code) => {
 
 				if (code.length > minAndMax.max) {
@@ -93,7 +93,7 @@ export class MainComponent implements OnInit, OnDestroy {
 					}
 
 					const isCurrencyCodeValid = VALID_CURRENCY_CODES
-						.some(c => c.key == currencyCode);
+						.some(c => c.currencyCode == currencyCode);
 
 					// Unknown or invalid currency code
 					if (!isCurrencyCodeValid) {

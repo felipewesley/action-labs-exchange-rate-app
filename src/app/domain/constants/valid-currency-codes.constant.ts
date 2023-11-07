@@ -1,28 +1,37 @@
-import { IKeyValuePair } from "app/common/types/key-value-pair";
+export type ValidCurrencyCodeItem = {
+	currencyCode: string;
+	description: string;
+	symbol: string;
+};
 
 /**
  * List of all valid and accepted currency codes
  * @constant VALID_CURRENCY_CODES
  */
-export const VALID_CURRENCY_CODES: IKeyValuePair<string, string>[] = [
+export const VALID_CURRENCY_CODES: ValidCurrencyCodeItem[] = [
 	{
-		key: 'BRL',
-		value: 'Brazilian real'
+		currencyCode: 'BRL',
+		description: 'Brazilian real',
+		symbol: 'BRL'
 	},
 	{
-		key: 'USD',
-		value: 'US dollar',
+		currencyCode: 'USD',
+		description: 'US dollar',
+		symbol: 'USD'
 	},
 	{
-		key: 'GBP',
-		value: 'British pounds'
+		currencyCode: 'GBP',
+		description: 'British pounds',
+		symbol: 'GBP'
 	},
 	{
-		key: 'JPY',
-		value: 'Japanese yen'
+		currencyCode: 'JPY',
+		description: 'Japanese yen',
+		symbol: 'JPY'
 	},
 	{
-		key: 'CAD',
-		value: 'Canadian dollar'
+		currencyCode: 'CAD',
+		description: 'Canadian dollar',
+		symbol: 'CAD'
 	},
 ];
