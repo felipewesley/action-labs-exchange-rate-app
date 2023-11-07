@@ -1,0 +1,15 @@
+<article class="w-full h-full flex-auto flex flex-col">
+
+	<app-layout-header
+		[title]="appTitle"></app-layout-header>
+
+	<!-- Loads the router-outlet -->
+	<section class="px-4">
+		<ng-content></ng-content>
+	</section>
+
+	<app-layout-footer
+		class="mt-auto"
+		[companyName]="companyName"></app-layout-footer>
+
+</article>
