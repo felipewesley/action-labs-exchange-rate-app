@@ -15,8 +15,11 @@ export class CloseDiffSignalPipe implements PipeTransform {
 			return value.toString();
 		}
 
-		const signal = value > 0 ? '+' : '-';
+		if (value > 0) {
+			return `+${value}`;
+		}
 
-		return `${signal}${value}`;
+		// Already have a negative signal
+		return value.toString();
 	}
 }
