@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 
 import { environment } from "environments/environment";
 
-import { BehaviorSubject, Observable, map, take } from "rxjs";
+import { BehaviorSubject, Observable, delay, map, of, take } from "rxjs";
 
 import { DailyExchangeRateModel } from "app/domain/models/daily-exchange-rate.model";
 import { CurrentExchangeRateModel } from "app/domain/models/current-exchange-rate.model";
@@ -62,6 +62,18 @@ export class MainService {
 			to_symbol: toSymbol
 		};
 
+		return of(<CurrentExchangeRateModel>{
+			exchangeRate: 5,
+			fromSymbol: fromSymbol,
+			lastUpdatedAt: new Date(),
+			rateLimitExceeded: false,
+			success: true,
+			toSymbol: toSymbol
+		})
+		.pipe(
+			delay(3000)
+		);
+
 		return this._http.get<CurrentExchangeRateModel>(url, { params })
 			.pipe(
 				take(1)
@@ -76,6 +88,96 @@ export class MainService {
 			from_symbol: fromSymbol,
 			to_symbol: toSymbol
 		};
+
+		return of(<DailyExchangeRateModel>{
+			data: [
+				{
+					close: 5.0038,
+					date: new Date(2022, 2, 9),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 2, 7),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 2, 6),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 2, 5),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 2, 4),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 2, 3),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 2, 2),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 1, 28),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 1, 27),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 1, 26),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+				{
+					close: 5.0038,
+					date: new Date(2022, 1, 25),
+					high: 5.0689,
+					low: 4.9836,
+					open: 5.0666,
+				},
+			],
+			from: fromSymbol,
+			lastUpdatedAt: new Date(),
+			rateLimitExceeded: false,
+			success: true,
+			to: toSymbol
+		})
+		.pipe(
+			delay(3000)
+		);
 
 		return this._http.get<DailyExchangeRateModel>(url, { params })
 			.pipe(
