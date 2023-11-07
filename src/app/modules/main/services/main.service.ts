@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 
 import { environment } from "environments/environment";
 
-import { BehaviorSubject, Observable, delay, map, of, take } from "rxjs";
+import { BehaviorSubject, Observable, delay, map, of, take, tap } from "rxjs";
 
 import { DailyExchangeRateModel } from "app/domain/models/daily-exchange-rate.model";
 import { CurrentExchangeRateModel } from "app/domain/models/current-exchange-rate.model";
@@ -14,12 +14,26 @@ export class MainService {
 	private readonly _currentExchangeRate = new BehaviorSubject<CurrentExchangeRateModel>(null);
 	private readonly _dailyExchangeRate = new BehaviorSubject<DailyExchangeRateModel>(null);
 
-	public readonly currentExchangeRate$ = this._currentExchangeRate.asObservable();
+	public readonly currentExchangeRate$ = this._currentExchangeRate.asObservable()
+		.pipe(
+			tap(() => {
+				// Resets the daily exchange rate when the current exchanged is updated
+				this._dailyExchangeRate.next(null);
+			})
+		);
 	public readonly dailyExchangeRate$ = this._dailyExchangeRate.asObservable();
 
 	constructor(
 		private _http: HttpClient
 	) { }
+
+	/**
+	 * Removes the current exchange data from the subject
+	 */
+	public clearCurrentExchangeRate(): void;
+	public clearCurrentExchangeRate(): void {
+		this._currentExchangeRate.next(null);
+	}
 
 	/**
 	 * Fetches the current exchange rate from the api and updates its subject
@@ -32,6 +46,7 @@ export class MainService {
 		return this._fetchCurrentExchangeRate(fromSymbol, toSymbol)
 			.pipe(
 				map(currentExchangeRate => {
+					console.log('[CURRENT] =>', currentExchangeRate);
 					this._currentExchangeRate.next(currentExchangeRate);
 				})
 			);
@@ -48,6 +63,7 @@ export class MainService {
 		return this._fetchDailyExchangeRate(fromSymbol, toSymbol)
 			.pipe(
 				map(dailyExchangeRate => {
+					console.log('[DAILY] =>', dailyExchangeRate);
 					this._dailyExchangeRate.next(dailyExchangeRate);
 				})
 			);
