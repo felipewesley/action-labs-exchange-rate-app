@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
 import { AuthService } from '../auth.service';
 
-@Injectable()
-export class ApiKeyInterceptor implements HttpInterceptor {
+/**
+ * API key HTTP interceptor function
+ * @param req
+ * @param next
+ * @returns
+ */
+export function apiKeyInterceptorFn(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
 
-	constructor(
-		private _authService: AuthService
-	) { }
+	const authService = inject(AuthService);
 
-	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+	const headers = authService.addApiKeyToRequestHeaders(req.headers);
 
-		const headers = this._authService.addApiKeyToRequestHeaders(req.headers);
-
-		return next.handle(req.clone({ headers }));
-	}
+	return next(req.clone({ headers }));
 }
