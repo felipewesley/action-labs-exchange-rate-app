@@ -9,43 +9,38 @@
 			{{ rate.date | date : 'dd/MM/YYYY' }}
 		</header>
 
-		<section class="mt-2">
+		<section class="flex flex-col xs:flex-row justify-between gap-2 xs:gap-4 mt-2">
 
-			<div class="grid grid-cols-2 gap-x-4">
-
-				<div class="grid grid-cols-2 gap-x-4 gap-y-2 items-baseline">
-
-					<!-- First column -->
-					<div class="w-max uppercase text-xs">
-						Open:
-					</div>
-					<div class="text-lg font-medium">
-						{{ rate.open }}
-					</div>
-					<div class="w-max uppercase text-xs">
-						Close:
-					</div>
-					<div class="text-lg font-medium">
-						{{ rate.close }}
-					</div>
+			<!-- First column -->
+			<div class="grid grid-cols-3 gap-x-4 gap-y-2 items-baseline w-fit">
+				<div class="w-fit uppercase text-xs">
+					Open:
 				</div>
-
-				<!-- Second column -->
-				<div class="grid grid-cols-2 auto-cols-min gap-x-2 gap-y-2 items-baseline">
-					<div class="w-fit uppercase text-xs">
-						High:
-					</div>
-					<div class="w-full text-lg font-medium">
-						{{ rate.high }}
-					</div>
-					<div class="w-fit uppercase text-xs">
-						Low:
-					</div>
-					<div class="w-full text-lg font-medium">
-						{{ rate.low }}
-					</div>
+				<div class="col-span-2 font-medium whitespace-nowrap">
+					{{ rate.open | dailyExchangeRate: 'BRL' }}
 				</div>
+				<div class="w-fit uppercase text-xs">
+					Close:
+				</div>
+				<div class="col-span-2 font-medium whitespace-nowrap">
+					{{ rate.close | dailyExchangeRate: 'BRL' }}
+				</div>
+			</div>
 
+			<!-- Second column -->
+			<div class="grid grid-cols-3 gap-x-4 gap-y-2 items-baseline w-fit">
+				<div class="w-fit uppercase text-xs">
+					High:
+				</div>
+				<div class="col-span-2 font-medium whitespace-nowrap">
+					{{ rate.high | dailyExchangeRate: 'BRL' }}
+				</div>
+				<div class="w-fit uppercase text-xs">
+					Low:
+				</div>
+				<div class="col-span-2 font-medium whitespace-nowrap">
+					{{ rate.low | dailyExchangeRate: 'BRL' }}
+				</div>
 			</div>
 
 		</section>
@@ -61,7 +56,7 @@
 					'text-red-600': rate.closeDiff < 0,
 					'text-gray-600': rate.closeDiff == 0,
 				}">
-				{{ rate.closeDiff }}%
+				{{ rate.closeDiff | closeDiffSignal }}%
 			</span>
 		</footer>
 

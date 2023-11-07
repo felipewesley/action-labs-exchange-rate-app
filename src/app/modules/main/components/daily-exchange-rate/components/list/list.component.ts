@@ -2,6 +2,8 @@ import { CurrencyPipe, DatePipe, NgClass, NgFor } from "@angular/common";
 import { Component, Input, OnInit } from "@angular/core";
 
 import { DailyExchangeRateDataModel } from "app/domain/models/daily-exchange-rate.model";
+import { CloseDiffSignalPipe } from "app/shared/pipes/close-diff-signal";
+import { DailyExchangeRatePipe } from "app/shared/pipes/daily-exchange-rate";
 
 export type MainDailyExchangeRateListModel = DailyExchangeRateDataModel & {
 	closeDiff: number;
@@ -15,6 +17,10 @@ export type MainDailyExchangeRateListModel = DailyExchangeRateDataModel & {
 		NgFor,
 		DatePipe,
 		NgClass,
+		DailyExchangeRatePipe,
+		CloseDiffSignalPipe
+	],
+	providers: [
 		CurrencyPipe
 	]
 })
