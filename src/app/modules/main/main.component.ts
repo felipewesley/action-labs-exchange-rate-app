@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatButtonModule } from "@angular/material/button";
 
 import { Subject, filter, map, switchMap, takeUntil } from "rxjs";
 
@@ -17,7 +20,11 @@ const currencyCodeQueryParamsKey = 'currencyCode';
 	standalone: true,
 	imports: [
 		CommonModule,
-		ReactiveFormsModule
+		FormsModule,
+		ReactiveFormsModule,
+		MatInputModule,
+		MatFormFieldModule,
+		MatButtonModule
 	],
 	providers: [
 		MainService
@@ -25,7 +32,7 @@ const currencyCodeQueryParamsKey = 'currencyCode';
 })
 export class MainComponent implements OnInit, OnDestroy {
 
-	public readonly currencyCodeControl = new FormControl<string>(null);
+	public readonly currencyCodeControl: FormControl<string>;
 
 	private readonly _unsubscribeAll = new Subject<void>();
 
@@ -33,7 +40,28 @@ export class MainComponent implements OnInit, OnDestroy {
 		private _service: MainService,
 		private _router: Router,
 		private _activatedRoute: ActivatedRoute
-	) { }
+	) {
+
+		const minAndMaxLength = VALID_CURRENCY_CODES
+			.map(c => c.key)
+			.reduce((minAndMax, code) => {
+
+				if (code.length > minAndMax.max) {
+					minAndMax.max = code.length;
+				}
+
+				if (code.length < minAndMax.min) {
+					minAndMax.min = code.length;
+				}
+
+				return minAndMax;
+			}, { min: 0, max: 0 });
+
+		this.currencyCodeControl = new FormControl<string>(null, [
+			Validators.minLength(minAndMaxLength.min),
+			Validators.maxLength(minAndMaxLength.max)
+		]);
+	}
 
 	ngOnInit(): void {
 

@@ -1,0 +1,26 @@
+<main class="flex-auto">
+
+	<form class="flex flex-col gap-4" (ngSubmit)="fetchResult()">
+
+		<mat-form-field
+			[appearance]="'fill'">
+			<mat-label>Enter the currency code</mat-label>
+			<input
+				matInput
+				type="text"
+				[formControl]="currencyCodeControl">
+		</mat-form-field>
+
+		<button
+			mat-flat-button
+			type="submit"
+			[color]="'primary'"
+			class="uppercase py-4 bg-cyan-500 text-white font-normal rounded-full"
+			[disabled]="currencyCodeControl.invalid"
+			(click)="fetchResult()">
+			Exchange result
+		</button>
+
+	</form>
+
+</main>
