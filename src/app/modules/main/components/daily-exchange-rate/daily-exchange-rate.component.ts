@@ -2,6 +2,7 @@ import { I18nPluralPipe, NgIf } from "@angular/common";
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 import { VALID_CURRENCY_CODES } from "app/domain/constants/valid-currency-codes.constant";
 import { DailyExchangeRateDataModel } from "app/domain/models/daily-exchange-rate.model";
@@ -18,6 +19,7 @@ import { MainDailyExchangeRateListComponent, MainDailyExchangeRateListModel } fr
 		I18nPluralPipe,
 		MatButtonModule,
 		MatIconModule,
+		MatTooltipModule,
 
 		MainDailyExchangeRateListComponent
 	]
