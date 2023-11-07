@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 
 import { appConfig } from "app/config/app.config";
 
@@ -9,6 +9,7 @@ import { LayoutFooterComponent } from "./components/footer/footer.component";
 	selector: 'app-layout',
 	templateUrl: './layout.component.html',
 	standalone: true,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		LayoutHeaderComponent,
 		LayoutFooterComponent,

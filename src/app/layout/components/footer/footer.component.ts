@@ -1,9 +1,10 @@
 import { NgIf } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
 
 @Component({
 	selector: 'app-layout-footer',
 	templateUrl: './footer.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: true,
 	imports: [
 		NgIf
