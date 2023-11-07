@@ -7,8 +7,9 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 
-import { Subject, filter, map, switchMap, takeUntil, tap } from "rxjs";
+import { Subject, catchError, filter, map, switchMap, takeUntil, tap } from "rxjs";
 
+import { NotificationService } from "app/core/services/notification";
 import { VALID_CURRENCY_CODES } from "app/domain/constants/valid-currency-codes.constant";
 
 import { MainService } from "./services/main.service";
@@ -61,7 +62,8 @@ export class MainComponent implements OnInit, OnDestroy {
 	constructor(
 		private _service: MainService,
 		private _router: Router,
-		private _activatedRoute: ActivatedRoute
+		private _activatedRoute: ActivatedRoute,
+		private _notificationService: NotificationService
 	) {
 
 		/**
@@ -111,7 +113,7 @@ export class MainComponent implements OnInit, OnDestroy {
 					// Unknown or invalid currency code
 					if (!isCurrencyCodeValid) {
 
-						console.error('Código desconhecido!');
+						this._notificationService.message(`Unknown currency code!`);
 
 						// Remove the currency code from the query
 						this._updateCurrencyCodeQueryParam(null);
@@ -129,7 +131,13 @@ export class MainComponent implements OnInit, OnDestroy {
 				filter(currencyCode => currencyCode != null),
 				switchMap(currencyCode => {
 					// Fetches api when its a valid currency code
-					return this._service.fetchCurrentExchangeRate(currencyCode, 'BRL');
+					return this._service.fetchCurrentExchangeRate(currencyCode, 'BRL')
+						.pipe(
+							catchError(err => {
+								// this._updateCurrencyCodeQueryParam(null);
+								throw err;
+							})
+						);
 				}),
 				takeUntil(this._unsubscribeAll)
 			)
@@ -145,7 +153,45 @@ export class MainComponent implements OnInit, OnDestroy {
 
 		const fromSymbol = this.currencyCodeControl.value;
 
-		// Validations
+		if (typeof fromSymbol == 'string' && fromSymbol.length == 0) {
+
+			this._updateCurrencyCodeQueryParam(null);
+			return;
+		}
+
+		if (!fromSymbol) {
+
+			this._notificationService.message(`Invalid currency control!`);
+			return;
+		}
+
+		if (!VALID_CURRENCY_CODES.some(c => c.currencyCode.toUpperCase() == fromSymbol.toUpperCase())) {
+
+			this._notificationService.message(`Currency code not found!`);
+			return;
+		}
+
+		// Check if is in uppercase
+		if (fromSymbol.toUpperCase() != fromSymbol) {
+
+			const fromSymbolUppercase = fromSymbol.toUpperCase();
+
+			this._notificationService
+				.confirm(`We found the "${fromSymbolUppercase}" and you provided "${fromSymbol}". Its this the desired code?`)
+				.subscribe(res => {
+
+					if (res) {
+
+						this.currencyCodeControl.patchValue(fromSymbolUppercase);
+						this._updateCurrencyCodeQueryParam(fromSymbolUppercase);
+					} else {
+
+						this._notificationService.message(`Invalid currency code!`);
+					}
+				});
+
+			return;
+		}
 
 		this._updateCurrencyCodeQueryParam(fromSymbol);
 	}

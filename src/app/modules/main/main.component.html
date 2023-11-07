@@ -9,6 +9,10 @@
 				matInput
 				type="text"
 				[formControl]="currencyCodeControl">
+			<mat-hint>Note: must be uppercase chars</mat-hint>
+			<mat-error *ngIf="currencyCodeControl.errors">
+				Invalid currency code!
+			</mat-error>
 		</mat-form-field>
 
 		<button
@@ -16,8 +20,7 @@
 			type="submit"
 			[color]="'primary'"
 			class="uppercase font-normal text-lg"
-			[disabled]="currencyCodeControl.invalid || (loading$ | async)"
-			(click)="fetchResult()">
+			[disabled]="currencyCodeControl.invalid || (loading$ | async)">
 			Exchange result
 		</button>
 
