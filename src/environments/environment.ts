@@ -10,6 +10,10 @@ export const environment = {
 		currentExchangeRate	: '/open/currentExchangeRate',
 		dailyExchangeRate		: '/open/dailyExchangeRate',
 	},
+
+	keys: {
+		api: 'RVZG0GHEV2KORLNA'
+	},
 };
 
 /*
