@@ -15,7 +15,7 @@ export function apiKeyInterceptorFn(req: HttpRequest<unknown>, next: HttpHandler
 
 	const authService = inject(AuthService);
 
-	const headers = authService.addApiKeyToRequestHeaders(req.headers);
+	const params = authService.addApiKeyToRequestQueryParams(req.params);
 
-	return next(req.clone({ headers }));
+	return next(req.clone({ params }));
 }
