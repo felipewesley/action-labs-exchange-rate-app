@@ -1,0 +1,29 @@
+<article class="flex flex-col">
+
+	<header class="flex items-center justify-between">
+		<h2 class="uppercase font-bold tracking-wide">
+			Last {{ numberOfDays | i18nPlural: {
+				'=1': 'day',
+				'other': numberOfDays + ' days'
+			} }}
+		</h2>
+		<button
+			class="flex items-center justify-center"
+			mat-icon-button
+			(click)="toggleDailyExchangeRates()">
+			<mat-icon
+				*ngIf="!opened"
+				[color]="'primary'">add</mat-icon>
+			<mat-icon
+				*ngIf="opened"
+				[color]="'primary'">remove</mat-icon>
+		</button>
+	</header>
+
+	<hr class="flex-auto bg-primary h-1" *ngIf="!opened">
+
+	<app-main-daily-exchange-rate-list
+		*ngIf="opened"
+		[dailyExchangeRates]="dailyExchangeRates"></app-main-daily-exchange-rate-list>
+
+</article>
