@@ -56,8 +56,19 @@
 					'text-red-600': rate.closeDiff < 0,
 					'text-gray-600': rate.closeDiff == 0,
 				}">
-				{{ rate.closeDiff | closeDiffSignal }}%
+				{{ rate.closeDiff | closeDiffFormat | closeDiffSignal }}%
 			</span>
+			<div class="flex items-center ml-2" [ngSwitch]="true">
+				<mat-icon
+					*ngSwitchCase="rate.closeDiff > 0"
+					class="text-green-600 scale-125">expand_less</mat-icon>
+				<mat-icon
+					*ngSwitchCase="rate.closeDiff < 0"
+					class="text-red-600 scale-125">expand_more</mat-icon>
+				<mat-icon
+					*ngSwitchCase="rate.closeDiff == 0"
+					class="text-gray-600 scale-125">remove</mat-icon>
+			</div>
 		</footer>
 
 	</article>
