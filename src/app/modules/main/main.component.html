@@ -23,11 +23,15 @@
 
 	</form>
 
-	<section class="flex flex-col">
+	<section class="flex flex-col" *ngIf="currentExchangeRate$ | async as currentExchangeRate">
 
 		<hr class="flex-auto my-8">
 
-		<app-main-current-exchange-rate></app-main-current-exchange-rate>
+		<app-main-current-exchange-rate
+			[fromSymbol]="currentExchangeRate.fromSymbol"
+			[toSymbol]="currentExchangeRate.toSymbol"
+			[exchangeRate]="currentExchangeRate.exchangeRate"
+			[lastUpdatedAt]="currentExchangeRate.lastUpdatedAt"></app-main-current-exchange-rate>
 
 	</section>
 

@@ -38,6 +38,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
 	public readonly currencyCodeControl: FormControl<string>;
 
+	public readonly currentExchangeRate$ = this._service.currentExchangeRate$;
+	public readonly dailyExchangeRate$ = this._service.dailyExchangeRate$;
+
 	private readonly _unsubscribeAll = new Subject<void>();
 
 	constructor(
@@ -106,7 +109,7 @@ export class MainComponent implements OnInit, OnDestroy {
 				filter(currencyCode => currencyCode != null),
 				switchMap(currencyCode => {
 					// Fetches api when its a valid currency code
-					return this._service.fetchCurrentExchangeRate('BRL', currencyCode);
+					return this._service.fetchCurrentExchangeRate(currencyCode, 'BRL');
 				}),
 				takeUntil(this._unsubscribeAll)
 			)

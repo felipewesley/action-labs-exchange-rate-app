@@ -2,12 +2,16 @@
 
 	<header class="flex items-center justify-between">
 		<aside class="block leading-tight">
-			<h2 class="font-bold tracking-wide">Exchange rate now</h2>
-			<span class="text-xs">09/03/2022 - 15h09</span>
+			<h2 class="font-bold tracking-wide">
+				Exchange rate now
+			</h2>
+			<span class="text-xs">
+				{{ lastUpdatedAt | date: 'dd/MM/YYYY' }} - {{ lastUpdatedAt | date: 'HH' }}h{{ lastUpdatedAt | date: 'mm' }}
+			</span>
 		</aside>
 		<aside>
 			<strong class="text-primary text-2xl font-bold tracking-wide">
-				USD/BRL
+				{{ fromSymbol }}/{{ toSymbol }}
 			</strong>
 		</aside>
 	</header>
