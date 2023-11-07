@@ -3,7 +3,9 @@ import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
 
-import { Subject, filter, map, switchMap, takeUntil, tap } from "rxjs";
+import { Subject, filter, map, switchMap, takeUntil } from "rxjs";
+
+import { VALID_CURRENCY_CODES } from "app/domain/constants/valid-currency-codes.constant";
 
 import { MainService } from "./services/main.service";
 
@@ -37,23 +39,43 @@ export class MainComponent implements OnInit, OnDestroy {
 
 		this._activatedRoute.queryParamMap
 			.pipe(
-				map(params => params.get(currencyCodeQueryParamsKey)),
-				tap(symbol => {
-					if (symbol == null) {
+				map(params => {
+
+					const currencyCode = params.get(currencyCodeQueryParamsKey);
+
+					// No currency code in the query
+					if (currencyCode == null) {
 						this._service.clearCurrentExchangeRate();
-						this._router.navigate(['.'], {
-							queryParams: {
-								[currencyCodeQueryParamsKey]: null
-							}
-						});
+
+						return null;
 					}
 
-					if (this.currencyCodeControl.value == null && this.currencyCodeControl.value != symbol) {
-						this.currencyCodeControl.patchValue(symbol);
+					const isCurrencyCodeValid = VALID_CURRENCY_CODES
+						.some(c => c.key == currencyCode);
+
+					// Unknown or invalid currency code
+					if (!isCurrencyCodeValid) {
+
+						console.error('Código desconhecido!');
+
+						// Remove the currency code from the query
+						this._updateCurrencyCodeQueryParam(null);
+
+						return null;
 					}
+
+					// Currency code is in the query and the control value is empty
+					if (this.currencyCodeControl.value != currencyCode) {
+						this.currencyCodeControl.patchValue(currencyCode);
+					}
+
+					return currencyCode;
 				}),
-				filter(symbol => symbol != null),
-				switchMap(symbol => this._service.fetchCurrentExchangeRate('BRL', symbol)),
+				filter(currencyCode => currencyCode != null),
+				switchMap(currencyCode => {
+					// Fetches api when its a valid currency code
+					return this._service.fetchCurrentExchangeRate('BRL', currencyCode);
+				}),
 				takeUntil(this._unsubscribeAll)
 			)
 			.subscribe();
@@ -70,11 +92,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
 		// Validations
 
-		this._router.navigate(['.'], {
-			queryParams: {
-				[currencyCodeQueryParamsKey]: fromSymbol
-			}
-		});
+		this._updateCurrencyCodeQueryParam(fromSymbol);
 	}
 
 	public fetchDailyResults(): void {
@@ -86,5 +104,14 @@ export class MainComponent implements OnInit, OnDestroy {
 
 		this._service.fetchDailyExchangeRate(fromSymbol, toSymbol)
 			.subscribe();
+	}
+
+	private _updateCurrencyCodeQueryParam(currencyCode: string): void {
+
+		this._router.navigate(['.'], {
+			queryParams: {
+				[currencyCodeQueryParamsKey]: currencyCode
+			}
+		});
 	}
 }

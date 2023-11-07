@@ -75,7 +75,7 @@ export class MainService {
 
 		const params = {
 			from_symbol: fromSymbol,
-			to_symbol: toSymbol
+			to_symbol: toSymbol,
 		};
 
 		return of(<CurrentExchangeRateModel>{
@@ -102,7 +102,7 @@ export class MainService {
 
 		const params = {
 			from_symbol: fromSymbol,
-			to_symbol: toSymbol
+			to_symbol: toSymbol,
 		};
 
 		return of(<DailyExchangeRateModel>{
