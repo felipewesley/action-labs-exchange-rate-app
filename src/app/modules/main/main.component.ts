@@ -1,15 +1,22 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { CommonModule } from "@angular/common";
 
 import { Subject, filter, map, switchMap, takeUntil, tap } from "rxjs";
 
 import { MainService } from "./services/main.service";
 
+const currencyCodeQueryParamsKey = 'currencyCode';
+
 @Component({
 	selector: 'app-main',
 	templateUrl: './main.component.html',
 	standalone: true,
+	imports: [
+		CommonModule,
+		ReactiveFormsModule
+	],
 	providers: [
 		MainService
 	]
@@ -30,10 +37,19 @@ export class MainComponent implements OnInit, OnDestroy {
 
 		this._activatedRoute.queryParamMap
 			.pipe(
-				map(params => params.get('symbol')),
+				map(params => params.get(currencyCodeQueryParamsKey)),
 				tap(symbol => {
 					if (symbol == null) {
 						this._service.clearCurrentExchangeRate();
+						this._router.navigate(['.'], {
+							queryParams: {
+								[currencyCodeQueryParamsKey]: null
+							}
+						});
+					}
+
+					if (this.currencyCodeControl.value == null && this.currencyCodeControl.value != symbol) {
+						this.currencyCodeControl.patchValue(symbol);
 					}
 				}),
 				filter(symbol => symbol != null),
@@ -56,7 +72,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
 		this._router.navigate(['.'], {
 			queryParams: {
-				symbol: fromSymbol
+				[currencyCodeQueryParamsKey]: fromSymbol
 			}
 		});
 	}
