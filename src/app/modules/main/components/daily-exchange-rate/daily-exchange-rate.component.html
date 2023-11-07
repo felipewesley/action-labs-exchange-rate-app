@@ -10,6 +10,7 @@
 		<button
 			class="flex items-center justify-center"
 			mat-icon-button
+			[disabled]="loadingRates"
 			(click)="toggleDailyExchangeRates()">
 			<mat-icon
 				*ngIf="!opened"
@@ -24,6 +25,7 @@
 
 	<app-main-daily-exchange-rate-list
 		*ngIf="opened"
+		[loadingRates]="loadingRates"
 		[dailyExchangeRates]="dailyExchangeRates"></app-main-daily-exchange-rate-list>
 
 </article>

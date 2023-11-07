@@ -1,76 +1,104 @@
 <div class="flex flex-col gap-4 p-4 bg-gray-100 border border-b-4 border-b-primary">
 
-	<!-- Item -->
-	<article
-		*ngFor="let rate of dailyExchangeRates"
-		class="flex flex-col gap-2 p-4 bg-white shadow-lg">
+	<!-- Loading -->
+	<p
+		*ngIf="loadingRates"
+		class="text-gray-500 text-center">
+		Carregando dados... Por favor, aguarde um momento.
+	</p>
 
-		<header class="text-primary font-medium">
-			{{ rate.date | date : 'dd/MM/YYYY' }}
-		</header>
+	<!-- No loading -->
+	<ng-container *ngIf="!loadingRates">
 
-		<section class="flex flex-col xs:flex-row justify-between gap-2 xs:gap-4 mt-2">
+		<!-- Rates list -->
+		<ng-container *ngIf="dailyExchangeRates.length > 0; else noRates">
 
-			<!-- First column -->
-			<div class="grid grid-cols-3 gap-x-4 gap-y-2 items-baseline w-fit">
-				<div class="w-fit uppercase text-xs">
-					Open:
-				</div>
-				<div class="col-span-2 font-medium whitespace-nowrap">
-					{{ rate.open | dailyExchangeRate: rate.currencySymbol }}
-				</div>
-				<div class="w-fit uppercase text-xs">
-					Close:
-				</div>
-				<div class="col-span-2 font-medium whitespace-nowrap">
-					{{ rate.close | dailyExchangeRate: rate.currencySymbol }}
-				</div>
+			<!-- Item -->
+			<article
+				*ngFor="let rate of dailyExchangeRates"
+				class="flex flex-col gap-2 p-4 bg-white shadow-lg">
+
+				<header class="text-primary font-medium">
+					{{ rate.date | date : 'dd/MM/YYYY' }}
+				</header>
+
+				<section class="flex flex-col xs:flex-row justify-between gap-2 xs:gap-4 mt-2">
+
+					<!-- First column -->
+					<div class="grid grid-cols-3 gap-x-4 gap-y-2 items-baseline w-fit">
+						<div class="w-fit uppercase text-xs">
+							Open:
+						</div>
+						<div class="col-span-2 font-medium whitespace-nowrap">
+							{{ rate.open | dailyExchangeRate: rate.currencySymbol }}
+						</div>
+						<div class="w-fit uppercase text-xs">
+							Close:
+						</div>
+						<div class="col-span-2 font-medium whitespace-nowrap">
+							{{ rate.close | dailyExchangeRate: rate.currencySymbol }}
+						</div>
+					</div>
+
+					<!-- Second column -->
+					<div class="grid grid-cols-3 gap-x-4 gap-y-2 items-baseline w-fit">
+						<div class="w-fit uppercase text-xs">
+							High:
+						</div>
+						<div class="col-span-2 font-medium whitespace-nowrap">
+							{{ rate.high | dailyExchangeRate: rate.currencySymbol }}
+						</div>
+						<div class="w-fit uppercase text-xs">
+							Low:
+						</div>
+						<div class="col-span-2 font-medium whitespace-nowrap">
+							{{ rate.low | dailyExchangeRate: rate.currencySymbol }}
+						</div>
+					</div>
+
+				</section>
+
+				<footer class="flex items-center gap-2">
+					<span class="uppercase text-xs">
+						Close diff (%):
+					</span>
+					<span
+						class="text-lg font-medium"
+						[ngClass]="{
+							'text-green-600': rate.closeDiff > 0,
+							'text-red-600': rate.closeDiff < 0,
+							'text-gray-600': rate.closeDiff == 0,
+						}">
+						{{ rate.closeDiff | closeDiffFormat | closeDiffSignal }}%
+					</span>
+					<div class="flex items-center ml-2" [ngSwitch]="true">
+						<mat-icon
+							*ngSwitchCase="rate.closeDiff > 0"
+							class="text-green-600 scale-125">expand_less</mat-icon>
+						<mat-icon
+							*ngSwitchCase="rate.closeDiff < 0"
+							class="text-red-600 scale-125">expand_more</mat-icon>
+						<mat-icon
+							*ngSwitchCase="rate.closeDiff == 0"
+							class="text-gray-600 scale-125">remove</mat-icon>
+					</div>
+				</footer>
+
+			</article>
+
+		</ng-container>
+
+		<!-- No rates template -->
+		<ng-template #noRates>
+			<div class="flex justify-center items-center gap-4">
+				<mat-icon>info</mat-icon>
+				<p class="text-gray-500">
+					Não há informações para exibir!
+				</p>
 			</div>
+		</ng-template>
 
-			<!-- Second column -->
-			<div class="grid grid-cols-3 gap-x-4 gap-y-2 items-baseline w-fit">
-				<div class="w-fit uppercase text-xs">
-					High:
-				</div>
-				<div class="col-span-2 font-medium whitespace-nowrap">
-					{{ rate.high | dailyExchangeRate: rate.currencySymbol }}
-				</div>
-				<div class="w-fit uppercase text-xs">
-					Low:
-				</div>
-				<div class="col-span-2 font-medium whitespace-nowrap">
-					{{ rate.low | dailyExchangeRate: rate.currencySymbol }}
-				</div>
-			</div>
+	</ng-container>
 
-		</section>
-
-		<footer class="flex items-center gap-2">
-			<span class="uppercase text-xs">
-				Close diff (%):
-			</span>
-			<span
-				class="text-lg font-medium"
-				[ngClass]="{
-					'text-green-600': rate.closeDiff > 0,
-					'text-red-600': rate.closeDiff < 0,
-					'text-gray-600': rate.closeDiff == 0,
-				}">
-				{{ rate.closeDiff | closeDiffFormat | closeDiffSignal }}%
-			</span>
-			<div class="flex items-center ml-2" [ngSwitch]="true">
-				<mat-icon
-					*ngSwitchCase="rate.closeDiff > 0"
-					class="text-green-600 scale-125">expand_less</mat-icon>
-				<mat-icon
-					*ngSwitchCase="rate.closeDiff < 0"
-					class="text-red-600 scale-125">expand_more</mat-icon>
-				<mat-icon
-					*ngSwitchCase="rate.closeDiff == 0"
-					class="text-gray-600 scale-125">remove</mat-icon>
-			</div>
-		</footer>
-
-	</article>
 
 </div>

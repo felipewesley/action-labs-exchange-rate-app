@@ -1,6 +1,6 @@
-<main class="flex-auto flex flex-col pb-12 max-w-lg bg-white mx-auto sm:p-6 sm:shadow-lg sm:border sm:rounded-lg">
+<main class="flex-auto flex flex-col pb-12 max-w-lg bg-white mx-auto sm:mb-12 sm:p-6 sm:shadow-lg sm:border sm:rounded-lg overflow-hidden">
 
-	<form class="flex flex-col gap-4" (ngSubmit)="fetchResult()">
+	<form class="flex flex-col gap-4" autocomplete="off" (ngSubmit)="fetchResult()">
 
 		<mat-form-field
 			[appearance]="'fill'">
@@ -16,12 +16,18 @@
 			type="submit"
 			[color]="'primary'"
 			class="uppercase font-normal text-lg"
-			[disabled]="currencyCodeControl.invalid"
+			[disabled]="currencyCodeControl.invalid || (loading$ | async)"
 			(click)="fetchResult()">
 			Exchange result
 		</button>
 
 	</form>
+
+	<mat-progress-bar
+		*ngIf="loading$ | async"
+		class="top-0 w-full my-4"
+		[color]="'primary'"
+		[mode]="'indeterminate'"></mat-progress-bar>
 
 	<section class="flex flex-col" *ngIf="currentExchangeRate$ | async as currentExchangeRate">
 
@@ -37,6 +43,7 @@
 
 			<app-main-daily-exchange-rate
 				*ngIf="dailyExchangeRate$ | async as dailyExchangeRate"
+				[loadingRates]="loading$ | async"
 				[numberOfDays]="30"
 				[fromSymbol]="currentExchangeRate.fromSymbol"
 				[toSymbol]="currentExchangeRate.toSymbol"

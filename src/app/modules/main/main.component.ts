@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 import { Subject, filter, map, switchMap, takeUntil, tap } from "rxjs";
 
@@ -28,6 +29,7 @@ const currencyCodeQueryParamsKey = 'currencyCode';
 		MatInputModule,
 		MatFormFieldModule,
 		MatButtonModule,
+		MatProgressBarModule,
 
 		MainCurrentExchangeRateComponent,
 		MainDailyExchangeRateComponent
@@ -42,6 +44,17 @@ export class MainComponent implements OnInit, OnDestroy {
 
 	public readonly currentExchangeRate$ = this._service.currentExchangeRate$;
 	public readonly dailyExchangeRate$ = this._service.dailyExchangeRate$;
+
+	public readonly loading$ = this._service.loading$
+		.pipe(
+			tap(loading => {
+				if (loading) {
+					this.currencyCodeControl.disable();
+				} else {
+					this.currencyCodeControl.enable();
+				}
+			})
+		);
 
 	private readonly _unsubscribeAll = new Subject<void>();
 

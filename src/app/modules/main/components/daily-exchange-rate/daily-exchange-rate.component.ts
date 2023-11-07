@@ -55,6 +55,8 @@ export class MainDailyExchangeRateComponent implements OnInit {
 		this.dailyExchangeRates = rates;
 	};
 
+	@Input('loadingRates') public loadingRates: boolean;
+
 	@Output('onLoadDailyExchangeRates') public onLoadDailyExchangeRates = new EventEmitter<void>();
 
 	public dailyExchangeRates: MainDailyExchangeRateListModel[] = [];
@@ -65,7 +67,6 @@ export class MainDailyExchangeRateComponent implements OnInit {
 
 	ngOnInit(): void {
 
-		this.toggleDailyExchangeRates();
 	}
 
 	public toggleDailyExchangeRates(): void {

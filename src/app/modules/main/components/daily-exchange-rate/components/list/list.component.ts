@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgFor, NgSwitch, NgSwitchCase } from "@angular/common";
+import { CurrencyPipe, DatePipe, DecimalPipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase } from "@angular/common";
 import { Component, Input, OnInit } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
 
@@ -16,6 +16,7 @@ export type MainDailyExchangeRateListModel = DailyExchangeRateDataModel & {
 	templateUrl: './list.component.html',
 	standalone: true,
 	imports: [
+		NgIf,
 		NgFor,
 		DatePipe,
 		NgClass,
@@ -34,6 +35,8 @@ export type MainDailyExchangeRateListModel = DailyExchangeRateDataModel & {
 export class MainDailyExchangeRateListComponent implements OnInit {
 
 	@Input('dailyExchangeRates') public dailyExchangeRates: MainDailyExchangeRateListModel[];
+
+	@Input('loadingRates') public loadingRates: boolean;
 
 	constructor() { }
 
