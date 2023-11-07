@@ -6,9 +6,13 @@ export const environment = {
 	production: false,
 
 	api: {
-		baseUrl							: 'https://api-brl-exchange.actionlabs.com.br/api/1.0',
-		currentExchangeRate	: '/open/currentExchangeRate',
-		dailyExchangeRate		: '/open/dailyExchangeRate',
+		// baseUrl							: 'https://api-brl-exchange.actionlabs.com.br/api/1.0',
+		// currentExchangeRate	: '/open/currentExchangeRate',
+		// dailyExchangeRate		: '/open/dailyExchangeRate',
+
+		baseUrl							: '.',
+		currentExchangeRate	: '/assets/api/currentExchangeRate.json',
+		dailyExchangeRate		: '/assets/api/dailyExchangeRate.json',
 	},
 
 	keys: {

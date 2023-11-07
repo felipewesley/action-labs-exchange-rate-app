@@ -1,0 +1,8 @@
+{
+	"exchangeRate": 5,
+	"fromSymbol": "USD",
+	"lastUpdatedAt": "2023-11-07T20:25:45.911Z",
+	"rateLimitExceeded": false,
+	"success": true,
+	"toSymbol": "BRL"
+}
