@@ -39,6 +39,7 @@
 				*ngIf="dailyExchangeRate$ | async as dailyExchangeRate"
 				[numberOfDays]="30"
 				[fromSymbol]="currentExchangeRate.fromSymbol"
+				[toSymbol]="currentExchangeRate.toSymbol"
 				[dailyExchangeRates]="dailyExchangeRate.data"
 				(onLoadDailyExchangeRates)="fetchDailyResults()"></app-main-daily-exchange-rate>
 

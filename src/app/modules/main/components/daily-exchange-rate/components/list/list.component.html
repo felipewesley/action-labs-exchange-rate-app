@@ -17,13 +17,13 @@
 					Open:
 				</div>
 				<div class="col-span-2 font-medium whitespace-nowrap">
-					{{ rate.open | dailyExchangeRate: 'BRL' }}
+					{{ rate.open | dailyExchangeRate: rate.currencySymbol }}
 				</div>
 				<div class="w-fit uppercase text-xs">
 					Close:
 				</div>
 				<div class="col-span-2 font-medium whitespace-nowrap">
-					{{ rate.close | dailyExchangeRate: 'BRL' }}
+					{{ rate.close | dailyExchangeRate: rate.currencySymbol }}
 				</div>
 			</div>
 
@@ -33,13 +33,13 @@
 					High:
 				</div>
 				<div class="col-span-2 font-medium whitespace-nowrap">
-					{{ rate.high | dailyExchangeRate: 'BRL' }}
+					{{ rate.high | dailyExchangeRate: rate.currencySymbol }}
 				</div>
 				<div class="w-fit uppercase text-xs">
 					Low:
 				</div>
 				<div class="col-span-2 font-medium whitespace-nowrap">
-					{{ rate.low | dailyExchangeRate: 'BRL' }}
+					{{ rate.low | dailyExchangeRate: rate.currencySymbol }}
 				</div>
 			</div>
 

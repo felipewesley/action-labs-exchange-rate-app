@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 
+import { VALID_CURRENCY_CODES } from "app/domain/constants/valid-currency-codes.constant";
 import { DailyExchangeRateDataModel } from "app/domain/models/daily-exchange-rate.model";
 
 import { MainDailyExchangeRateListComponent, MainDailyExchangeRateListModel } from "./components/list/list.component";
@@ -24,6 +25,8 @@ export class MainDailyExchangeRateComponent implements OnInit {
 
 	@Input('numberOfDays') public numberOfDays: number;
 
+	@Input('toSymbol') public toSymbol: string;
+
 	@Input('fromSymbol') public set setFromSymbol(symbol: string) {
 		this.opened = false;
 	};
@@ -38,9 +41,14 @@ export class MainDailyExchangeRateComponent implements OnInit {
 		const rates: MainDailyExchangeRateListModel[] = data
 			.map(d => {
 
+				const symbol = VALID_CURRENCY_CODES
+					.find(c => c.currencyCode == this.toSymbol)
+					?.symbol;
+
 				return <MainDailyExchangeRateListModel>{
 					...d,
-					closeDiff: 2.5
+					closeDiff: 2.5174412,
+					currencySymbol: symbol
 				};
 			});
 

@@ -8,6 +8,7 @@ import { DailyExchangeRatePipe } from "app/shared/pipes/daily-exchange-rate";
 
 export type MainDailyExchangeRateListModel = DailyExchangeRateDataModel & {
 	closeDiff: number;
+	currencySymbol: string;
 };
 
 @Component({

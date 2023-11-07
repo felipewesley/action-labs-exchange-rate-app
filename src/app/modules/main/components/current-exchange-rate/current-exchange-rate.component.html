@@ -18,7 +18,7 @@
 
 	<section class="bg-primary bg-opacity-10 text-primary p-6 rounded-sm">
 		<p class="text-center font-bold text-3xl tracking-wide">
-			R$ 5,00
+			{{ exchangeRate | currency : currencySymbol : 'symbol' : undefined : 'pt-BR' }}
 		</p>
 	</section>
 
