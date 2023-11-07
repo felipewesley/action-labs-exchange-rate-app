@@ -1,0 +1,88 @@
+/* ------------------------------ */
+/* Button */
+/* ------------------------------ */
+
+/* Height */
+.mat-mdc-button,
+.mat-mdc-raised-button {
+	height: 50px;
+	min-height: 50px;
+	max-height: 50px;
+	line-height: 1 !important;
+}
+
+/* Rounded */
+.mat-mdc-button,
+.mat-mdc-raised-button {
+	padding-left: 20px !important;
+	padding-right: 20px !important;
+	border-radius: 9999px !important;
+}
+
+/* Colors */
+.mat-mdc-button,
+.mat-mdc-raised-button {
+
+	&:not([disabled=true]) {
+
+		&.mat-primary {
+
+			@apply bg-primary #{'!important'};
+			@apply text-white #{'!important'};
+		}
+	}
+}
+
+/* ------------------------------ */
+/* Form field */
+/* ------------------------------ */
+
+.mat-mdc-form-field.mat-form-field-appearance-fill {
+
+	/* Focus */
+	&.mat-focused {
+
+		.mat-mdc-form-field-focus-overlay {
+			opacity: 0 !important;
+		}
+	}
+
+	/* Valid field */
+	&.mat-focused:not(.mat-form-field-invalid) {
+
+		.mat-mdc-text-field-wrapper {
+			@apply border-primary #{'!important'};
+		}
+	}
+
+	/* Default style */
+	.mat-mdc-text-field-wrapper {
+
+		/* Form field */
+		.mat-mdc-form-field-flex {
+
+			.mat-mdc-form-field-infix {
+
+				/* Floating label */
+				.mat-mdc-floating-label {
+
+					@apply text-black #{'!important'};
+
+					&.mdc-floating-label--float-above {
+
+						@apply text-primary #{'!important'};
+					}
+				}
+			}
+		}
+
+		/* Underline color */
+		.mdc-line-ripple--active {
+
+			&::before, &::after {
+
+				@apply text-primary border-primary bg-primary fill-primary #{'!important'};
+			}
+		}
+	}
+}
